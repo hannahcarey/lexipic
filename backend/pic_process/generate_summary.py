@@ -6,14 +6,13 @@ import base64
 import httpx
 from IPython.display import HTML, display
 
+# Import configuration management
+from config import get_anthropic_key, get_anthropic_client
+
 
 def test():
-    #in command line: set ANTHROPIC_API_KEY 
-    api_key=os.environ.get("ANTHROPIC_API_KEY")
-    client = Anthropic(api_key = api_key)
-
-    if (api_key == None):
-        sys.exit("No value set for ANTHROPIC_API_KEY in os.environ.")
+    # Use configuration management for API key
+    client = get_anthropic_client()
 
     image1_url = "https://upload.wikimedia.org/wikipedia/commons/a/a7/Camponotus_flavomarginatus_ant.jpg"
     image1_url= "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Wrexham_Village_student_accommodation%2C_Wrexham_-_geograph.org.uk_-_5666878.jpg/640px-Wrexham_Village_student_accommodation%2C_Wrexham_-_geograph.org.uk_-_5666878.jpg"
@@ -25,8 +24,7 @@ def test():
 #input: picture. NEED TO MAKE SURE 
 def get_image_summary(image_data):
     image_media_type = "image/jpeg"
-    api_key=os.environ.get("ANTHROPIC_API_KEY")
-    client = Anthropic(api_key = api_key)
+    client = get_anthropic_client()
     message = client.messages.create(
         model="claude-sonnet-4-20250514",
         max_tokens=1024,

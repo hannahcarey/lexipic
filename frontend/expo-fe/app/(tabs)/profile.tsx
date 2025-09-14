@@ -14,6 +14,7 @@ import { Image } from 'expo-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { apiService } from '../../services/api';
+import { BackendUserStats } from '../../types';
 
 interface UserProfile {
   id: string;
@@ -85,10 +86,12 @@ export default function ProfileScreen() {
       }
 
       // Load user profile and stats from API
-      const [userProfile, userStats] = await Promise.all([
+      const [userProfile, userStatsResponse] = await Promise.all([
         apiService.getUserProfile(),
         apiService.getUserStats()
       ]);
+
+      const userStats = userStatsResponse as unknown as BackendUserStats;
 
       // Map API response to local interfaces
       const mappedUser: UserProfile = {
@@ -96,19 +99,19 @@ export default function ProfileScreen() {
         name: userProfile.display_name || userProfile.name || 'User',
         email: userProfile.email,
         avatar: userProfile.avatar,
-        totalScore: userProfile.totalScore || 0,
-        questionsAnswered: userProfile.questionsAnswered || 0,
-        correctAnswers: userProfile.correctAnswers || 0,
-        joinedDate: userProfile.joinedDate || new Date().toISOString().split('T')[0],
-        preferredLanguages: userProfile.preferredLanguages || ['Spanish', 'French', 'German']
+        totalScore: userStats.total_score || 0,
+        questionsAnswered: userStats.total_flashcards_seen || 0,
+        correctAnswers: userStats.total_correct || 0,
+        joinedDate: (userProfile as any).created_at?.split('T')[0] || new Date().toISOString().split('T')[0],
+        preferredLanguages: (userProfile as any).preferred_languages || ['Spanish', 'Chinese', 'Japanese']
       };
 
       const mappedStats: UserStats = {
         accuracy: userStats.accuracy || 0,
-        streak: userStats.streak || 0,
+        streak: userStats.current_streak || 0,
         level: userStats.level || 1,
         xp: userStats.xp || 0,
-        achievements: userStats.achievements || []
+        achievements: calculateAchievements(userStats)
       };
 
       setUser(mappedUser);
@@ -219,9 +222,62 @@ export default function ProfileScreen() {
 
   const getLevelProgress = () => {
     if (!stats) return 0;
-    const xpForCurrentLevel = stats.level * 250;
-    const xpForNextLevel = (stats.level + 1) * 250;
-    return ((stats.xp - xpForCurrentLevel) / (xpForNextLevel - xpForCurrentLevel)) * 100;
+    
+    // Backend calculates level as: Math.floor(xp / 250) + 1
+    // Level 1: 0-249 XP, Level 2: 250-499 XP, Level 3: 500-749 XP, etc.
+    const xpForCurrentLevel = (stats.level - 1) * 250;
+    const xpForNextLevel = stats.level * 250;
+    
+    // Calculate progress within current level
+    const xpInCurrentLevel = stats.xp - xpForCurrentLevel;
+    const xpNeededForNextLevel = xpForNextLevel - xpForCurrentLevel;
+    
+    // Ensure progress doesn't exceed 100% or go below 0%
+    const progress = Math.max(0, Math.min(100, (xpInCurrentLevel / xpNeededForNextLevel) * 100));
+    
+    return progress;
+  };
+
+  const calculateAchievements = (userStats: any): string[] => {
+    const achievements: string[] = [];
+    
+    // Achievement based on total questions answered
+    if (userStats.total_flashcards_seen >= 100) {
+      achievements.push('Century Club');
+    } else if (userStats.total_flashcards_seen >= 50) {
+      achievements.push('Half Century');
+    } else if (userStats.total_flashcards_seen >= 10) {
+      achievements.push('Getting Started');
+    }
+    
+    // Achievement based on accuracy
+    if (userStats.accuracy >= 90) {
+      achievements.push('Perfectionist');
+    } else if (userStats.accuracy >= 80) {
+      achievements.push('Sharp Shooter');
+    } else if (userStats.accuracy >= 70) {
+      achievements.push('Good Aim');
+    }
+    
+    // Achievement based on streak
+    if (userStats.current_streak >= 30) {
+      achievements.push('Monthly Master');
+    } else if (userStats.current_streak >= 7) {
+      achievements.push('Week Warrior');
+    } else if (userStats.current_streak >= 3) {
+      achievements.push('Consistent');
+    }
+    
+    // Achievement based on level
+    if (userStats.level >= 10) {
+      achievements.push('Expert');
+    } else if (userStats.level >= 5) {
+      achievements.push('Advanced');
+    } else if (userStats.level >= 2) {
+      achievements.push('Novice');
+    }
+    
+    return achievements;
   };
 
   const getAccuracyColor = (accuracy: number) => {
@@ -274,7 +330,7 @@ export default function ProfileScreen() {
             <View style={[styles.progressBar, { width: `${getLevelProgress()}%` }]} />
           </View>
           <Text style={styles.progressText}>
-            {Math.round(getLevelProgress())}% to Level {stats.level + 1}
+            {stats.xp - ((stats.level - 1) * 250)}/{250} XP to Level {stats.level + 1}
           </Text>
         </View>
 

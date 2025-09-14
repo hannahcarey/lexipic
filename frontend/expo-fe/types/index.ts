@@ -27,6 +27,19 @@ export interface PracticeItem extends Question {
   language: string;
 }
 
+// Backend UserStats interface (what API returns)
+export interface BackendUserStats {
+  accuracy: number;
+  current_streak: number;
+  level: number;
+  xp: number;
+  total_flashcards_seen: number;
+  total_correct: number;
+  total_score: number;
+  recent_activity: any[];
+}
+
+// Frontend UserStats interface (what UI expects)
 export interface UserStats {
   accuracy: number;
   streak: number;

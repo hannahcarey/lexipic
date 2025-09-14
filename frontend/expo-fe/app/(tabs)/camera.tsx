@@ -10,6 +10,8 @@ import {
   Modal,
   ActivityIndicator,
   ScrollView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { Image } from 'expo-image';
@@ -45,8 +47,15 @@ export default function CameraScreen() {
   const cameraRef = useRef<CameraView>(null);
   
   // User preferences (could be loaded from storage or user profile)
-  const [language] = useState('Spanish');
+  const [language, setLanguage] = useState('Spanish');
   const [level] = useState('A2');
+  
+  // Available languages for photo analysis
+  const availableLanguages = [
+    { label: '🇪🇸 Spanish', value: 'Spanish' },
+    { label: '🇯🇵 Japanese', value: 'Japanese' },
+    { label: '🇨🇳 Chinese', value: 'Chinese' },
+  ];
 
   useEffect(() => {
     (async () => {
@@ -190,11 +199,14 @@ export default function CameraScreen() {
   };
 
   const submitCurrentAnswer = () => {
-    if (!analysisResult || !currentAnswer.trim()) return;
+    if (!analysisResult) return;
+    
+    // Allow submission even with empty answer
+    const answerToStore = currentAnswer.trim();
 
-    // Store the current answer
+    // Store the current answer (can be empty)
     const updatedAnswers = [...studentAnswers];
-    updatedAnswers[currentQuestionIndex] = currentAnswer.trim();
+    updatedAnswers[currentQuestionIndex] = answerToStore;
     setStudentAnswers(updatedAnswers);
 
     // Move to next question or finish
@@ -205,6 +217,61 @@ export default function CameraScreen() {
       // All questions answered, proceed to evaluation
       finishQuestionnaire(updatedAnswers);
     }
+  };
+
+  const skipCurrentQuestion = () => {
+    if (!analysisResult) return;
+    
+    // Store empty answer for this question
+    const updatedAnswers = [...studentAnswers];
+    updatedAnswers[currentQuestionIndex] = '';
+    setStudentAnswers(updatedAnswers);
+    
+    // Move to next question or finish
+    if (currentQuestionIndex < analysisResult.questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCurrentAnswer('');
+    } else {
+      // All questions answered, proceed to evaluation
+      finishQuestionnaire(updatedAnswers);
+    }
+  };
+
+  const closeQuestionnaire = () => {
+    Alert.alert(
+      'Exit Questions?',
+      'Are you sure you want to exit? Your progress will be lost.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Exit', 
+          style: 'destructive',
+          onPress: resetCamera
+        }
+      ]
+    );
+  };
+
+  const showLanguageSelector = () => {
+    Alert.alert(
+      'Select Analysis Language',
+      'Choose the language for photo analysis and questions:',
+      [
+        ...availableLanguages.map(lang => ({
+          text: lang.label,
+          onPress: () => setLanguage(lang.value)
+        })),
+        { 
+          text: 'Cancel', 
+          style: 'cancel' as const,
+          onPress: () => {}
+        }
+      ]
+    );
+  };
+
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
   };
 
   const finishQuestionnaire = async (answers: string[]) => {
@@ -273,9 +340,30 @@ export default function CameraScreen() {
         animationType="slide"
         transparent={true}
       >
-        <View style={styles.modalOverlay}>
+        <TouchableOpacity 
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={closeQuestionnaire}
+        >
           <ScrollView style={styles.modalScrollView} showsVerticalScrollIndicator={false}>
-            <View style={styles.modalContent}>
+            <TouchableWithoutFeedback onPress={dismissKeyboard}>
+              <View style={styles.modalContent}>
+              {/* Close button */}
+              <TouchableOpacity 
+                style={styles.closeButton}
+                onPress={closeQuestionnaire}
+              >
+                <Text style={styles.closeButtonText}>×</Text>
+              </TouchableOpacity>
+              
+              {/* Captured Image Display */}
+              {capturedImage && (
+                <View style={styles.questionImageContainer}>
+                  <Image source={{ uri: capturedImage }} style={styles.questionImage} />
+                  <Text style={styles.questionImageLabel}>Your Photo</Text>
+                </View>
+              )}
+              
               {/* Progress indicator */}
               <View style={styles.progressContainer}>
                 <Text style={styles.progressText}>
@@ -326,12 +414,11 @@ export default function CameraScreen() {
 
                 <TouchableOpacity
                   style={[
-                    styles.primaryButton, 
-                    !currentAnswer.trim() && styles.submitButtonDisabled,
+                    styles.primaryButton,
                     { flex: currentQuestionIndex === 0 ? 1 : 0.6 }
                   ]}
                   onPress={submitCurrentAnswer}
-                  disabled={!currentAnswer.trim() || isEvaluating}
+                  disabled={isEvaluating}
                 >
                   {isEvaluating ? (
                     <ActivityIndicator color="white" />
@@ -346,16 +433,14 @@ export default function CameraScreen() {
               {/* Skip button */}
               <TouchableOpacity
                 style={styles.skipButton}
-                onPress={() => {
-                  setCurrentAnswer('');
-                  submitCurrentAnswer();
-                }}
+                onPress={skipCurrentQuestion}
               >
                 <Text style={styles.skipButtonText}>Skip this question</Text>
               </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableWithoutFeedback>
           </ScrollView>
-        </View>
+        </TouchableOpacity>
       </Modal>
     );
   };
@@ -462,6 +547,22 @@ export default function CameraScreen() {
       ) : (
         <View style={styles.cameraContainer}>
           <CameraView style={styles.camera} facing={facing} ref={cameraRef} />
+          
+          {/* Language selection overlay */}
+          <TouchableOpacity 
+            style={styles.languageOverlay}
+            onPress={showLanguageSelector}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.languageLabel}>Language:</Text>
+            <View style={styles.languageDisplayContainer}>
+              <Text style={styles.languageDisplayText}>
+                {availableLanguages.find(lang => lang.value === language)?.label || '🇪🇸 Spanish'}
+              </Text>
+              <Text style={styles.languageDropdownIcon}>▼</Text>
+            </View>
+          </TouchableOpacity>
+          
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
               <Text style={styles.buttonText}>Flip Camera</Text>
@@ -644,7 +745,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     fontSize: 16,
     marginBottom: 20,
-    minHeight: 100,
+    minHeight: 60,
     backgroundColor: '#fafafa',
   },
   buttonRow: {
@@ -822,5 +923,101 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#ff6b35',
     marginLeft: 10,
+  },
+  
+  // Language selection styles
+  languageOverlay: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    right: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  languageLabel: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginRight: 12,
+  },
+  languageDisplayContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.95)',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  languageDisplayText: {
+    color: '#333',
+    fontSize: 15,
+    fontWeight: '600',
+    flex: 1,
+  },
+  languageDropdownIcon: {
+    color: '#666',
+    fontSize: 12,
+    marginLeft: 8,
+  },
+  
+  // Close button styles
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 15,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: '#ff4444',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    lineHeight: 20,
+  },
+  
+  // Question image display styles
+  questionImageContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop: 10,
+  },
+  questionImage: {
+    width: 200,
+    height: 150,
+    borderRadius: 12,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  questionImageLabel: {
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '500',
+    textAlign: 'center',
   },
 });

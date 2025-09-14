@@ -17,7 +17,8 @@ def test():
     client = get_anthropic_client()
 
     image1_url = "https://upload.wikimedia.org/wikipedia/commons/a/a7/Camponotus_flavomarginatus_ant.jpg"
-    image1_url= "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Wrexham_Village_student_accommodation%2C_Wrexham_-_geograph.org.uk_-_5666878.jpg/640px-Wrexham_Village_student_accommodation%2C_Wrexham_-_geograph.org.uk_-_5666878.jpg"
+    # image1_url= "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Wrexham_Village_student_accommodation%2C_Wrexham_-_geograph.org.uk_-_5666878.jpg/640px-Wrexham_Village_student_accommodation%2C_Wrexham_-_geograph.org.uk_-_5666878.jpg"
+    image1_url= "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Gustav_chocolate.jpg/800px-Gustav_chocolate.jpg"
     image1_media_type = "image/jpeg"
     image1_data = base64.standard_b64encode(httpx.get(image1_url).content).decode("utf-8")
 
@@ -41,7 +42,7 @@ def test():
                     },
                     {
                         "type": "text",
-                        "text": "List up to 30 discrete, tangible objects in this image. Only include things that are actual objects; do not include abstract concepts, textures, lighting, shadows, blur, background, or vague body parts. Keep each object name generic and concise (1-3 words). Format your answer as a Python-style list, like: [\"object1\", \"object2\", ...]."
+                        "text": "List up to 30 discrete, tangible objects in this image. Only include things that are actual objects; do not include abstract concepts, textures, lighting, shadows, blur, background, or vague body parts. Keep each object name generic and concise (1-3 words). If there is only one object in the image, list only that object. Include primarily images in the foreground. Format your answer as a Python-style list, like: [\"object1\", \"object2\", ...]. Your response should only include this list."
                     }
                 ],
             }

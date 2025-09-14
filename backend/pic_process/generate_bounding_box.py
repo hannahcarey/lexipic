@@ -11,6 +11,7 @@ import matplotlib.patches as patches
 def test():
     image_url = "http://images.cocodataset.org/val2017/000000039769.jpg"
     image = Image.open(requests.get(image_url, stream=True).raw)
+    print(image)
     # Check for cats and remote controls
     object = "cat"
     box= make_box(image,object)# [x0, y0, x1, y1]
@@ -67,7 +68,7 @@ def make_box(image,object):
         if score>best_score:
             best_box=box
     print(f"best box is {best_box}")
-    return box
+    return best_box
 
 def main():
     test()

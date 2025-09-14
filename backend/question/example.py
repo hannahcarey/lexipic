@@ -15,7 +15,7 @@ def main():
         response = input()
         feedback = get_feedback(img_data, user_data, question, response)
         print(f"Here is Claude's feedback: {feedback['feedback']}")
-        print(f"Claude scored your answer {feedback['points']}/100.")
+        print(f"Claude scored your answer {feedback['points']}/100."+"\n")
 
 
 main()

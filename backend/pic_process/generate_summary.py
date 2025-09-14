@@ -20,36 +20,10 @@ def test():
     image1_media_type = "image/jpeg"
     image1_data = base64.standard_b64encode(httpx.get(image1_url).content).decode("utf-8")
 
-    # Display inline using HTML --> this is not working properly :(
-    #display(HTML(f'<img src="data:{image1_media_type};base64,{image1_data}" width="400">'))
-
-    message = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=1024,
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "image",
-                        "source": {
-                            "type": "base64",
-                            "media_type": image1_media_type,
-                            "data": image1_data,
-                        },
-                    },
-                    {
-                        "type": "text",
-                        "text": "List up to 30 discrete, tangible objects in this image. Only include things that are actual objects; do not include abstract concepts, textures, lighting, shadows, blur, background, or vague body parts. Keep each object name generic and concise (1-3 words). Format your answer as a Python-style list, like: [\"object1\", \"object2\", ...]."
-                    }
-                ],
-            }
-        ],
-    )
-    print(message.content[0].text) #.content
+    return get_image_summary(image1_data)
 
 #input: picture. NEED TO MAKE SURE 
-def get_image_words(image_data):
+def get_image_summary(image_data):
     image_media_type = "image/jpeg"
     api_key=os.environ.get("ANTHROPIC_API_KEY")
     client = Anthropic(api_key = api_key)
@@ -70,13 +44,14 @@ def get_image_words(image_data):
                     },
                     {
                         "type": "text",
-                        "text": "List up to 30 discrete, tangible objects in this image. Only include things that are actual objects; do not include abstract concepts, textures, lighting, shadows, blur, background, or vague body parts. Keep each object name generic and concise (1-3 words). Format your answer as a Python-style list, like: [\"object1\", \"object2\", ...]."
+                        "text": "Generate a 50 word summary of this image. Extract key actions, objects, and relationships."
                     }
                 ],
             }
         ],
     )
     print(message.content[0].text) #.content
+    return message.content[0].text
 
 def main():
     test()

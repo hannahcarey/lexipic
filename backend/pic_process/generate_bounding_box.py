@@ -61,15 +61,14 @@ def test():
     plt.axis('off')
     plt.show()
 
+#input is a 3d array image, string object 
 def make_box(image,object):
     model_id = "IDEA-Research/grounding-dino-tiny"
     device = infer_device() 
     processor = AutoProcessor.from_pretrained(model_id)
-    model = AutoModelForZeroShotObjectDetection.from_pretrained(model_id).to(device) 
-    image_url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-    image = Image.open(requests.get(image_url, stream=True).raw)
+    model = AutoModelForZeroShotObjectDetection.from_pretrained(model_id).to(device)
     # Check for cats and remote controls
-    text_labels = [["a cat", "a remote control"]]
+    text_labels = [[object]]
 
     inputs = processor(images=image, text=text_labels, return_tensors="pt").to(model.device)
     with torch.no_grad():
@@ -84,6 +83,7 @@ def make_box(image,object):
     )
 
     result = results[0]
+    best_box
     for box, score, labels in zip(result["boxes"], result["scores"], result["labels"]):
         box = [round(x, 2) for x in box.tolist()]
         print(f"Detected {labels} with confidence {round(score.item(), 3)} at location {box}")

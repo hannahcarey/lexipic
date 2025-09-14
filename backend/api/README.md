@@ -8,7 +8,7 @@ A comprehensive Node.js/Express backend API for the Lexipic language learning mo
 - **Flashcard System** - Create, practice, and manage language learning flashcards  
 - **Image Analysis** - Upload images and get related flashcards for practice
 - **Progress Tracking** - User statistics, accuracy tracking, and learning analytics
-- **Multi-language Support** - Currently supports Spanish, French, German, Italian, and Portuguese
+- **Multi-language Support** - Currently supports Spanish, Chinese, and Japanese
 - **Supabase Integration** - PostgreSQL database with real-time capabilities
 
 ## 📋 Prerequisites

@@ -25,8 +25,8 @@ CREATE INDEX idx_user_flashcard_stats_user_language ON user_flashcard_stats(user
 -- Optional: Create a check constraint for valid languages
 -- ALTER TABLE flashcards 
 -- ADD CONSTRAINT check_flashcards_language 
--- CHECK (language IN ('Spanish', 'French', 'German', 'Italian', 'Portuguese', 'Mandarin', 'Japanese', 'Korean'));
+-- CHECK (language IN ('Spanish', 'Chinese', 'Japanese'));
 
 -- ALTER TABLE user_flashcard_stats 
 -- ADD CONSTRAINT check_user_stats_language 
--- CHECK (language IN ('Spanish', 'French', 'German', 'Italian', 'Portuguese', 'Mandarin', 'Japanese', 'Korean'));
+-- CHECK (language IN ('Spanish', 'Chinese', 'Japanese'));

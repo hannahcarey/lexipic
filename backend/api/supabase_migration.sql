@@ -28,11 +28,11 @@ CREATE INDEX idx_user_flashcard_stats_user_language ON user_flashcard_stats(user
 -- 6. Optional: Add constraints for valid languages (uncomment if needed)
 -- ALTER TABLE flashcards 
 -- ADD CONSTRAINT check_flashcards_language 
--- CHECK (language IN ('Spanish', 'French', 'German', 'Italian', 'Portuguese', 'Mandarin', 'Japanese', 'Korean'));
+-- CHECK (language IN ('Spanish', 'French', 'German', 'Italian', 'Chinese', 'Japanese', 'Korean'));
 
 -- ALTER TABLE user_flashcard_stats 
 -- ADD CONSTRAINT check_user_stats_language 
--- CHECK (language IN ('Spanish', 'French', 'German', 'Italian', 'Portuguese', 'Mandarin', 'Japanese', 'Korean'));
+-- CHECK (language IN ('Spanish', 'French', 'German', 'Italian', 'Chinese', 'Japanese', 'Korean'));
 
 -- 7. Verify the migration worked
 SELECT 'flashcards' as table_name, COUNT(*) as total_rows, language, COUNT(*) as rows_per_language

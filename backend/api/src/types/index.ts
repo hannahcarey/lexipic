@@ -43,6 +43,7 @@ export interface IUserStats {
   current_streak: number;
   level: number;
   xp: number;
+  total_score: number;
 }
 
 // Auth Types
@@ -116,5 +117,6 @@ export interface UserStatsResponse {
   xp: number;
   total_flashcards_seen: number;
   total_correct: number;
+  total_score: number;
   recent_activity: IUserFlashcardStats[];
 }

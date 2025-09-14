@@ -60,48 +60,6 @@ export default function GeneratorScreen() {
     }
   }, [selectedLanguages]);
 
-  const mockPracticeItems: PracticeItem[] = [
-    {
-      id: '1',
-      imageUrl: 'https://images.unsplash.com/photo-1549497538-303791108f95?w=400',
-      question: 'What is this in Spanish?',
-      correctAnswer: 'mesa',
-      options: ['mesa', 'silla', 'ventana', 'puerta'],
-      language: 'Spanish'
-    },
-    {
-      id: '2',
-      imageUrl: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400',
-      question: 'What is this in French?',
-      correctAnswer: 'chaise',
-      options: ['chaise', 'table', 'fenêtre', 'porte'],
-      language: 'French'
-    },
-    {
-      id: '3',
-      imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-      question: 'What is this in German?',
-      correctAnswer: 'Fenster',
-      options: ['Fenster', 'Tür', 'Stuhl', 'Tisch'],
-      language: 'German'
-    },
-    {
-      id: '4',
-      imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400',
-      question: 'What is this in Italian?',
-      correctAnswer: 'porta',
-      options: ['porta', 'finestra', 'tavolo', 'sedia'],
-      language: 'Italian'
-    },
-    {
-      id: '5',
-      imageUrl: 'https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=400',
-      question: 'What is this in Portuguese?',
-      correctAnswer: 'carro',
-      options: ['carro', 'casa', 'árvore', 'gato'],
-      language: 'Portuguese'
-    },
-  ];
 
   const generateNewQuestion = async () => {
     setIsLoading(true);
@@ -115,11 +73,14 @@ export default function GeneratorScreen() {
         return;
       }
 
-      // For guest users, use mock data
+      // For guest users, redirect to authentication
       if (userToken.startsWith('guest-')) {
-        const randomIndex = Math.floor(Math.random() * mockPracticeItems.length);
-        const randomItem = mockPracticeItems[randomIndex];
-        setCurrentItem(randomItem);
+        Alert.alert('Sign In Required', 'Please sign in to access flashcards from the database.', [
+          {
+            text: 'Sign In',
+            onPress: () => router.replace('/auth')
+          }
+        ]);
         return;
       }
 
@@ -142,12 +103,18 @@ export default function GeneratorScreen() {
     } catch (error) {
       console.error('Error fetching question:', error);
       
-      // Fallback to mock data on error
-      const randomIndex = Math.floor(Math.random() * mockPracticeItems.length);
-      const randomItem = mockPracticeItems[randomIndex];
-      setCurrentItem(randomItem);
-      
-      Alert.alert('Connection Issue', 'Using offline content. Check your internet connection for latest questions.');
+      // Show error without falling back to mock data
+      Alert.alert(
+        'Connection Issue', 
+        'Unable to load questions from the database. Please check your internet connection and try again.',
+        [
+          {
+            text: 'Retry',
+            onPress: () => generateNewQuestion()
+          }
+        ]
+      );
+      setCurrentItem(null);
     } finally {
       setIsLoading(false);
     }

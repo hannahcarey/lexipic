@@ -82,6 +82,7 @@ export const getUserStats = asyncHandler(async (req: AuthRequest, res: Response)
     xp: userStats.xp,
     total_flashcards_seen: userStats.total_flashcards_seen,
     total_correct: userStats.total_correct,
+    total_score: userStats.total_score,
     recent_activity: recentActivity
   };
 

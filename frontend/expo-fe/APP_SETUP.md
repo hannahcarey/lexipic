@@ -8,7 +8,7 @@ LexiPic is an Expo React Native app that helps users learn languages by identify
 - 🎯 **Practice Tab**: Random image-based language practice with multiple choice
 - 👤 **Profile Tab**: User profile, statistics, and progress tracking  
 - 🔐 **Authentication**: Login, signup, and guest mode
-- 🌍 **Multi-language Support**: Spanish, French, German, Italian, Portuguese
+- 🌍 **Multi-language Support**: Spanish, Chinese, Japanese
 
 ## Installation & Setup
 
@@ -18,11 +18,33 @@ npm install
 ```
 
 ### 2. Environment Configuration
+
+#### For Web Development (localhost)
 Create a `.env` file in the root directory with:
 ```
 EXPO_PUBLIC_API_URL=http://localhost:3000/api
 ```
-Replace with your actual backend API URL.
+
+#### For Mobile Development (ExpoGo)
+🚨 **Important**: ExpoGo on mobile devices cannot connect to `localhost`. You need to use your computer's IP address.
+
+**Quick Setup (Recommended):**
+```bash
+npm run setup-mobile
+```
+This script will automatically detect your IP address and create the `.env` file.
+
+**Manual Setup:**
+1. Find your computer's IP address:
+   - **Mac**: `ipconfig getifaddr en0`
+   - **Windows**: `ipconfig` (look for IPv4 Address)
+   - **Linux**: `hostname -I | cut -d' ' -f1`
+
+2. Create a `.env` file with your IP address:
+```
+EXPO_PUBLIC_API_URL=http://YOUR_IP_ADDRESS:3000/api
+```
+Example: `EXPO_PUBLIC_API_URL=http://10.189.111.158:3000/api`
 
 ### 3. Start the Development Server
 ```bash
@@ -30,9 +52,37 @@ npm start
 ```
 
 ### 4. Run on Device/Simulator
-- iOS: `npm run ios`
-- Android: `npm run android` 
-- Web: `npm run web`
+- iOS Simulator: `npm run ios`
+- Android Emulator: `npm run android` 
+- Web Browser: `npm run web`
+- **Mobile Device (ExpoGo)**: Scan QR code in Expo Go app
+
+## 📱 Mobile Development Troubleshooting
+
+### Common Issues & Solutions:
+
+**1. "Network request failed" or connection timeout:**
+- Make sure both your computer and phone are on the same WiFi network
+- Check that your firewall allows connections on port 3000
+- Verify the IP address in your `.env` file is correct
+- Try running `npm run get-ip` to regenerate the configuration
+
+**2. CORS errors:**
+- Backend is configured to allow local network connections in development
+- Make sure your backend server is running
+
+**3. "Unable to resolve host":**
+- Double-check your IP address with `ipconfig getifaddr en0` (Mac)
+- Restart both Expo and backend servers after changing the IP
+
+**4. Connection works on web but not mobile:**
+- This usually means you're using `localhost` instead of your IP address
+- Run `npm run setup-mobile` to fix the configuration
+
+### Network Requirements:
+- Both devices must be on the same WiFi network
+- Port 3000 must be accessible (check firewall)
+- VPN connections might interfere - try disabling if issues persist
 
 ## Backend API Requirements
 

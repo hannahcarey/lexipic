@@ -6,6 +6,7 @@ import base64
 import httpx
 from IPython.display import HTML, display
 import random
+import ast
 
 
 def test():
@@ -48,6 +49,7 @@ def test():
         ],
     )
     list_of_words=message.content[0].text
+    list_of_words= ast.literal_eval(list_of_words)
     print(list_of_words) #.content
     print(random.choice(list_of_words))
 
@@ -80,7 +82,8 @@ def get_image_words(image_data):
             }
         ],
     )
-    return message.content[0].text #.content
+    list_of_words=message.content[0].text
+    return ast.literal_eval(list_of_words)
 
 def main():
     test()

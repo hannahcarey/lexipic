@@ -50,7 +50,7 @@ def get_image_summary(image_data):
             }
         ],
     )
-    print(message.content[0].text) #.content
+    #print(message.content[0].text) #.content
     return message.content[0].text
 
 def main():

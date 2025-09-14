@@ -76,7 +76,7 @@ def get_image_words(image_data):
             }
         ],
     )
-    print(message.content[0].text) #.content
+    return message.content[0].text #.content
 
 def main():
     test()

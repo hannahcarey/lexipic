@@ -48,6 +48,7 @@ def test():
     )
     print(message.content[0].text) #.content
 
+#input: picture. NEED TO MAKE SURE 
 def get_image_words(image_data):
     image_media_type = "image/jpeg"
     api_key=os.environ.get("ANTHROPIC_API_KEY")

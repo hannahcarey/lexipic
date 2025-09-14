@@ -16,6 +16,18 @@ def get_key():
         sys.exit("No value set for ANTHROPIC_API_KEY in os.environ.")
     return api_key
 
+
+def get_whatisthis(img_data, user_data):
+    out = validate_data(img_data, user_data)
+    if (out[0]==None):
+        sys.exit(out[1])
+    match user_data['language']:
+        case "Spanish":
+            return {"question":"..."}
+        case "Chinese":
+            return {"question":"..."} # TODO
+    raise ValueError("Unsupported language selected.")
+
 # recieves scene data from the vision output, and returns 3 questions.
 def get_questions(img_data, user_data):
     out = validate_data(img_data, user_data)
@@ -34,7 +46,7 @@ def get_questions(img_data, user_data):
 
     prompt = f"""Generate 3 comprehension or discussion questions based on the following scene description:\n
         {scene_desc} \n
-        The learner's {language} level is {lvl}. Adjust grammar and vocabulary accordingly. \n
+        The learner's {language} level is {lvl}. Adjust grammar and vocabulary accordingly. Do not use any language other than {language}. \n
         Requirements: \n
         Make the questions relevant to the scene.\n
         Keep grammar appropriate to the level.\n

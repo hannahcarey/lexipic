@@ -1,4 +1,4 @@
-from generate_bounding_box import make_box
+from generate_bounding_box import bounding_box
 from generate_summary import get_image_summary
 from generate_word_list import get_image_words
 
@@ -115,7 +115,15 @@ class pic_process():
 
 def main():
     a = pic_process()
+    print("starting first test")
     a.test()
+    print("starting second test")
+    a.test()
+    print("third")
+    a.test()
+    print("forth")
+    a.test()
+    print('done')
 
 if __name__ == "__main__":
     main()

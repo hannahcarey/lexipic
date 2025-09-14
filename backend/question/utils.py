@@ -83,7 +83,7 @@ def get_feedback(img_data, user_data, question, answer):
     message = client.messages.create(
         model = "claude-sonnet-4-20250514",
         max_tokens = 1024,
-        system = "You are a language tutor helping learners practice {language}",
+        system = "You are a language tutor helping learners practice {user_data['language']}",
         messages =[
             {"role" : "user", "content" : prompt1}, {"role" : "assistant", "content": question}, {"role" : "user", "content" : answer}, {"role" : "user", "content" : prompt2}
         ],

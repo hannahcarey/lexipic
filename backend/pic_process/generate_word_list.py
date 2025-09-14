@@ -5,6 +5,7 @@ from anthropic import Anthropic
 import base64
 import httpx
 from IPython.display import HTML, display
+import random
 
 
 def test():
@@ -46,7 +47,10 @@ def test():
             }
         ],
     )
-    print(message.content[0].text) #.content
+    list_of_words=message.content[0].text
+    print(list_of_words) #.content
+    print(random.choice(list_of_words))
+
 
 #input: picture. NEED TO MAKE SURE 
 def get_image_words(image_data):

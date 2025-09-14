@@ -23,9 +23,11 @@ def get_whatisthis(img_data, user_data):
         sys.exit(out[1])
     match user_data['language']:
         case "Spanish":
-            return {"question":"..."}
+            return {"question":"¿Qué es esto?"}
         case "Chinese":
-            return {"question":"..."} # TODO
+            return {"question":"这是什么？"}
+        case "Japanese":
+            return {"question":"これは何ですか？"}
     raise ValueError("Unsupported language selected.")
 
 # recieves scene data from the vision output, and returns 3 questions.

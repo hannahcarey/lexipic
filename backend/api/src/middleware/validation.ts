@@ -75,7 +75,7 @@ export const validateUpdateProfile: ValidationChain[] = [
     .isArray()
     .withMessage('Preferred languages must be an array')
     .custom((languages: string[]) => {
-      const validLanguages = ['Spanish', 'French', 'German', 'Italian', 'Portuguese', 'English'];
+      const validLanguages = ['Spanish', 'Chinese', 'Japanese'];
       return languages.every(lang => validLanguages.includes(lang));
     })
     .withMessage('Invalid language in preferred languages')

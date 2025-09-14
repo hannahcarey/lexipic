@@ -29,16 +29,31 @@ const corsOptions = {
     // Allow requests with no origin (like mobile apps or Postman)
     if (!origin) return callback(null, true);
     
+    // In development, be more permissive for mobile devices
+    if (process.env.NODE_ENV === 'development') {
+      // Allow any local network origin for development
+      if (origin.includes('localhost') || 
+          origin.includes('127.0.0.1') || 
+          origin.includes('10.') || 
+          origin.includes('192.168.') || 
+          origin.includes('172.') ||
+          origin.startsWith('exp://')) {
+        return callback(null, true);
+      }
+    }
+    
     const allowedOrigins = [
       process.env.CORS_ORIGIN,
       'http://localhost:8081', // Expo default
       'http://localhost:19006', // Expo web
       'exp://localhost:19000', // Expo development
+      'http://localhost:19002', // Expo DevTools
     ].filter(Boolean);
 
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.log(`CORS: Blocked origin ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -100,11 +115,13 @@ app.get('/', (req: Request, res: Response) => {
 app.use(notFound);
 app.use(globalErrorHandler);
 
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT || '3000', 10);
 
-// Start server
-app.listen(PORT, () => {
+// Start server - bind to 0.0.0.0 to accept connections from network
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  console.log(`📱 Mobile access: Make sure to use your computer's IP address (not localhost)`);
+  console.log(`💡 Find your IP: 'ipconfig getifaddr en0' (Mac) or 'ipconfig' (Windows)`);
   console.log(`📁 Uploads directory: ${uploadsPath}`);
   console.log(`🌍 CORS origin: ${process.env.CORS_ORIGIN || 'http://localhost:8081'}`);
   console.log(`🔑 JWT secret configured: ${!!process.env.JWT_SECRET}`);

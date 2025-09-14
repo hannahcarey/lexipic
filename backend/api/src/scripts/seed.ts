@@ -4,166 +4,286 @@ dotenv.config();
 import { supabase } from '../utils/supabase';
 
 const seedFlashcards = [
-  // Spanish Flashcards
+  // ========== SPANISH FLASHCARDS ==========
   {
     object_name: "table",
     translation: "mesa",
-    image_url: "https://images.unsplash.com/photo-1549497538-303791108f95?w=400"
+    image_url: "https://images.unsplash.com/photo-1549497538-303791108f95?w=400",
+    language: "Spanish"
   },
   {
     object_name: "chair",
     translation: "silla",
-    image_url: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400"
+    image_url: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400",
+    language: "Spanish"
   },
   {
     object_name: "car",
     translation: "coche",
-    image_url: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=400"
+    image_url: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=400",
+    language: "Spanish"
   },
   {
     object_name: "door",
     translation: "puerta",
-    image_url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400"
+    image_url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400",
+    language: "Spanish"
   },
   {
     object_name: "cat",
     translation: "gato",
-    image_url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400"
+    image_url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400",
+    language: "Spanish"
   },
   {
     object_name: "dog",
     translation: "perro",
-    image_url: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=400"
+    image_url: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=400",
+    language: "Spanish"
   },
   {
     object_name: "house",
     translation: "casa",
-    image_url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400"
+    image_url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400",
+    language: "Spanish"
   },
   {
     object_name: "window",
     translation: "ventana",
-    image_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400"
+    image_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+    language: "Spanish"
   },
   {
     object_name: "book",
     translation: "libro",
-    image_url: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400"
+    image_url: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400",
+    language: "Spanish"
   },
   {
     object_name: "phone",
     translation: "teléfono",
-    image_url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400"
+    image_url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400",
+    language: "Spanish"
   },
   {
     object_name: "computer",
     translation: "computadora",
-    image_url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400"
+    image_url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400",
+    language: "Spanish"
   },
   {
     object_name: "apple",
     translation: "manzana",
-    image_url: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400"
+    image_url: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400",
+    language: "Spanish"
   },
   {
     object_name: "water",
     translation: "agua",
-    image_url: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400"
+    image_url: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400",
+    language: "Spanish"
   },
   {
     object_name: "tree",
     translation: "árbol",
-    image_url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400"
+    image_url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400",
+    language: "Spanish"
   },
   {
     object_name: "flower",
     translation: "flor",
-    image_url: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400"
+    image_url: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400",
+    language: "Spanish"
   },
-  {
-    object_name: "sun",
-    translation: "sol",
-    image_url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400"
-  },
-  {
-    object_name: "moon",
-    translation: "luna",
-    image_url: "https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?w=400"
-  },
-  {
-    object_name: "bird",
-    translation: "pájaro",
-    image_url: "https://images.unsplash.com/photo-1444464666168-49d633b86797?w=400"
-  },
-  {
-    object_name: "fish",
-    translation: "pez",
-    image_url: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400"
-  },
-  {
-    object_name: "bread",
-    translation: "pan",
-    image_url: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400"
-  },
-
-  // French Flashcards
+  
+  // ========== CHINESE FLASHCARDS ==========
   {
     object_name: "table",
-    translation: "table",
-    image_url: "https://images.unsplash.com/photo-1549497538-303791108f95?w=400"
+    translation: "桌子",
+    image_url: "https://images.unsplash.com/photo-1549497538-303791108f95?w=400",
+    language: "Chinese"
   },
   {
     object_name: "chair",
-    translation: "chaise",
-    image_url: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400"
+    translation: "椅子",
+    image_url: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400",
+    language: "Chinese"
   },
   {
     object_name: "car",
-    translation: "voiture",
-    image_url: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=400"
+    translation: "汽车",
+    image_url: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=400",
+    language: "Chinese"
   },
   {
     object_name: "door",
-    translation: "porte",
-    image_url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400"
+    translation: "门",
+    image_url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400",
+    language: "Chinese"
   },
   {
     object_name: "cat",
-    translation: "chat",
-    image_url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400"
-  },
-
-  // German Flashcards
-  {
-    object_name: "table",
-    translation: "Tisch",
-    image_url: "https://images.unsplash.com/photo-1549497538-303791108f95?w=400"
+    translation: "猫",
+    image_url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400",
+    language: "Chinese"
   },
   {
-    object_name: "chair",
-    translation: "Stuhl",
-    image_url: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400"
+    object_name: "dog",
+    translation: "狗",
+    image_url: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=400",
+    language: "Chinese"
   },
   {
-    object_name: "car",
-    translation: "Auto",
-    image_url: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=400"
-  },
-  {
-    object_name: "door",
-    translation: "Tür",
-    image_url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400"
+    object_name: "house",
+    translation: "房子",
+    image_url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400",
+    language: "Chinese"
   },
   {
     object_name: "window",
-    translation: "Fenster",
-    image_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400"
+    translation: "窗户",
+    image_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+    language: "Chinese"
+  },
+  {
+    object_name: "book",
+    translation: "书",
+    image_url: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400",
+    language: "Chinese"
+  },
+  {
+    object_name: "phone",
+    translation: "电话",
+    image_url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400",
+    language: "Chinese"
+  },
+  {
+    object_name: "computer",
+    translation: "电脑",
+    image_url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400",
+    language: "Chinese"
+  },
+  {
+    object_name: "apple",
+    translation: "苹果",
+    image_url: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400",
+    language: "Chinese"
+  },
+  {
+    object_name: "water",
+    translation: "水",
+    image_url: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400",
+    language: "Chinese"
+  },
+  {
+    object_name: "tree",
+    translation: "树",
+    image_url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400",
+    language: "Chinese"
+  },
+  {
+    object_name: "flower",
+    translation: "花",
+    image_url: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400",
+    language: "Chinese"
+  },
+  
+  // ========== JAPANESE FLASHCARDS ==========
+  {
+    object_name: "table",
+    translation: "テーブル",
+    image_url: "https://images.unsplash.com/photo-1549497538-303791108f95?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "chair",
+    translation: "いす",
+    image_url: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "car",
+    translation: "車",
+    image_url: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "door",
+    translation: "ドア",
+    image_url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "cat",
+    translation: "猫",
+    image_url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "dog",
+    translation: "犬",
+    image_url: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "house",
+    translation: "家",
+    image_url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "window",
+    translation: "窓",
+    image_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "book",
+    translation: "本",
+    image_url: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "phone",
+    translation: "電話",
+    image_url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "computer",
+    translation: "コンピューター",
+    image_url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "apple",
+    translation: "りんご",
+    image_url: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "water",
+    translation: "水",
+    image_url: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "tree",
+    translation: "木",
+    image_url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400",
+    language: "Japanese"
+  },
+  {
+    object_name: "flower",
+    translation: "花",
+    image_url: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400",
+    language: "Japanese"
   }
 ];
 
 const seedDatabase = async (): Promise<void> => {
   try {
-    console.log('🌱 Starting Supabase database seeding...');
+    console.log('🌱 Starting Supabase database seeding with multilingual flashcards...');
 
     // Test connection
     const { data: testData, error: testError } = await supabase
@@ -189,55 +309,40 @@ const seedDatabase = async (): Promise<void> => {
       console.warn('⚠️  Could not clear existing flashcards:', deleteError);
     }
 
-    // Insert seed flashcards
-    console.log('📝 Inserting seed flashcards...');
-    const { data: insertedFlashcards, error: insertError } = await supabase
-      .from('flashcards')
-      .insert(seedFlashcards)
-      .select();
+    // Insert seed flashcards in batches to avoid timeout
+    console.log('📝 Inserting multilingual flashcards...');
+    const batchSize = 15;
+    let insertedCount = 0;
+    
+    for (let i = 0; i < seedFlashcards.length; i += batchSize) {
+      const batch = seedFlashcards.slice(i, i + batchSize);
+      
+      const { data: insertedBatch, error: insertError } = await supabase
+        .from('flashcards')
+        .insert(batch)
+        .select();
 
-    if (insertError) {
-      console.error('❌ Error inserting flashcards:', insertError);
-      process.exit(1);
+      if (insertError) {
+        console.error(`❌ Error inserting batch ${Math.floor(i/batchSize) + 1}:`, insertError);
+        process.exit(1);
+      }
+
+      insertedCount += insertedBatch?.length || 0;
+      console.log(`  ✅ Inserted batch ${Math.floor(i/batchSize) + 1}: ${insertedBatch?.length} flashcards`);
     }
 
-    console.log(`✅ Successfully seeded ${insertedFlashcards?.length || 0} flashcards!`);
+    console.log(`🎉 Successfully seeded ${insertedCount} multilingual flashcards!`);
 
-    // Log statistics
+    // Log statistics by language
     const { data: stats, error: statsError } = await supabase
       .from('flashcards')
-      .select('object_name, translation')
+      .select('language')
       .limit(1000);
 
     if (!statsError && stats) {
       const languageStats: { [key: string]: number } = {};
       stats.forEach(flashcard => {
-        // Simple language detection based on common patterns
-        const translation = flashcard.translation;
-        let language = 'Unknown';
-        
-        if (translation.includes('ñ') || translation.includes('á') || translation.includes('é') || translation.includes('í') || translation.includes('ó') || translation.includes('ú')) {
-          language = 'Spanish';
-        } else if (translation.includes('ç') || translation.includes('è') || translation.includes('é') || translation.includes('à')) {
-          language = 'French';
-        } else if (translation[0] === translation[0].toUpperCase() && translation.length > 1) {
-          language = 'German';
-        } else if (/^[a-zA-Z\s]+$/.test(translation)) {
-          // Check for common Spanish words
-          const spanishWords = ['mesa', 'silla', 'coche', 'puerta', 'gato', 'perro', 'casa', 'ventana', 'libro', 'teléfono', 'computadora', 'manzana', 'agua', 'árbol', 'flor', 'sol', 'luna', 'pájaro', 'pez', 'pan'];
-          const frenchWords = ['table', 'chaise', 'voiture', 'porte', 'chat'];
-          const germanWords = ['Tisch', 'Stuhl', 'Auto', 'Tür', 'Fenster'];
-          
-          if (spanishWords.includes(translation)) {
-            language = 'Spanish';
-          } else if (frenchWords.includes(translation)) {
-            language = 'French';
-          } else if (germanWords.includes(translation)) {
-            language = 'German';
-          }
-        }
-        
-        languageStats[language] = (languageStats[language] || 0) + 1;
+        languageStats[flashcard.language] = (languageStats[flashcard.language] || 0) + 1;
       });
 
       console.log('\n📊 Seeding Statistics:');
@@ -246,11 +351,24 @@ const seedDatabase = async (): Promise<void> => {
       });
     }
 
+    // Show sample flashcards
+    const { data: sampleCards, error: sampleError } = await supabase
+      .from('flashcards')
+      .select('object_name, translation, language')
+      .limit(6);
+
+    if (!sampleError && sampleCards) {
+      console.log('\n🃏 Sample Flashcards:');
+      sampleCards.forEach(card => {
+        console.log(`  ${card.object_name} → ${card.translation} (${card.language})`);
+      });
+    }
+
     console.log('\n🎉 Database seeding completed successfully!');
     console.log('\n📝 Next steps:');
-    console.log('  1. Update your .env file with your Supabase credentials');
-    console.log('  2. Start the development server: npm run dev');
-    console.log('  3. Test the API endpoints');
+    console.log('  1. Update backend controllers to use language filtering');
+    console.log('  2. Add language selection to the frontend');
+    console.log('  3. Test the multilingual flashcard system');
     
     process.exit(0);
 

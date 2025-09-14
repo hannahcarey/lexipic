@@ -172,6 +172,7 @@ export const generateFlashcardFromImage = asyncHandler(async (req: AuthRequest, 
       objectName,
       translation,
       imageUrl,
+      'Spanish',
       user?.id
     );
 

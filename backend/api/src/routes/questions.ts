@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { 
   getRandomFlashcard, 
-  submitAnswer, 
-  getAllFlashcards, 
+  submitAnswer,
+  getAllFlashcards,
   createFlashcard,
-  getUserFlashcardHistory
+  getUserFlashcardHistory,
+  getAvailableLanguages
 } from '../controllers/flashcardController';
 import { 
   authenticate, 
@@ -69,5 +70,10 @@ router.post('/', authenticate, validateCreateFlashcard, handleValidationErrors, 
 // @desc    Get user's flashcard practice history
 // @access  Private
 router.get('/history', authenticate, getUserFlashcardHistory);
+
+// @route   GET /api/flashcards/languages
+// @desc    Get available languages
+// @access  Public
+router.get('/languages', getAvailableLanguages);
 
 export default router;

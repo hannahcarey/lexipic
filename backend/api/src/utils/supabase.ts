@@ -71,10 +71,15 @@ export class DatabaseService {
   }
 
   // Flashcard operations
-  static async getRandomFlashcard(excludeIds: string[] = []) {
+  static async getRandomFlashcard(excludeIds: string[] = [], language?: string) {
     let query = supabase
       .from('flashcards')
       .select('*');
+
+    // Filter by language if specified
+    if (language) {
+      query = query.eq('language', language);
+    }
 
     if (excludeIds.length > 0) {
       query = query.not('id', 'in', `(${excludeIds.join(',')})`);
@@ -90,7 +95,7 @@ export class DatabaseService {
     return data[randomIndex];
   }
 
-  static async createFlashcard(objectName: string, translation: string, imageUrl: string, createdBy?: string) {
+  static async createFlashcard(objectName: string, translation: string, imageUrl: string, language: string, createdBy?: string) {
     const { data, error } = await supabase
       .from('flashcards')
       .insert([
@@ -98,6 +103,7 @@ export class DatabaseService {
           object_name: objectName,
           translation,
           image_url: imageUrl,
+          language,
           created_by: createdBy
         }
       ])
@@ -108,11 +114,19 @@ export class DatabaseService {
     return data;
   }
 
-  static async getAllFlashcards(limit: number = 50, offset: number = 0) {
-    const { data, error } = await supabase
+  static async getAllFlashcards(limit: number = 50, offset: number = 0, language?: string) {
+    let query = supabase
       .from('flashcards')
-      .select('*')
-      .range(offset, offset + limit - 1);
+      .select('*');
+
+    // Filter by language if specified
+    if (language) {
+      query = query.eq('language', language);
+    }
+
+    query = query.range(offset, offset + limit - 1);
+
+    const { data, error } = await query;
 
     if (error) throw error;
     return data;

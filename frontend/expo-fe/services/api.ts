@@ -106,9 +106,15 @@ class ApiService {
     return response.data.data;
   }
 
-  // Practice/Question endpoints
-  async getRandomQuestion(): Promise<PracticeItem> {
-    const response: AxiosResponse<ApiResponse<PracticeItem>> = await this.api.get('/flashcards/random');
+  // Practice/Question endpoints  
+  async getRandomQuestion(language?: string): Promise<any> {
+    const params = language ? { language } : {};
+    const response: AxiosResponse<ApiResponse<any>> = await this.api.get('/flashcards/random', { params });
+    return response.data.data;
+  }
+
+  async getAvailableLanguages(): Promise<any> {
+    const response: AxiosResponse<ApiResponse<any>> = await this.api.get('/flashcards/languages');
     return response.data.data;
   }
 

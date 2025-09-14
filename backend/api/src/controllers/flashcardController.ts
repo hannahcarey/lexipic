@@ -16,12 +16,12 @@ export const getRandomFlashcard = asyncHandler(async (req: AuthRequest, res: Res
     excludeIds = recentActivity.map(activity => activity.flashcard_id);
   }
 
-  // Get random flashcard
-  let flashcard = await DatabaseService.getRandomFlashcard(excludeIds);
+  // Get random flashcard with language filter
+  let flashcard = await DatabaseService.getRandomFlashcard(excludeIds, language);
 
   // If no new flashcards, allow repeated ones
   if (!flashcard) {
-    flashcard = await DatabaseService.getRandomFlashcard([]);
+    flashcard = await DatabaseService.getRandomFlashcard([], language);
   }
 
   if (!flashcard) {
@@ -32,8 +32,8 @@ export const getRandomFlashcard = asyncHandler(async (req: AuthRequest, res: Res
     return;
   }
 
-  // Generate options for multiple choice (simplified for now)
-  const allFlashcards = await DatabaseService.getAllFlashcards(20);
+  // Generate options for multiple choice from same language
+  const allFlashcards = await DatabaseService.getAllFlashcards(20, 0, language);
   const otherOptions = allFlashcards
     .filter(f => f.id !== flashcard.id)
     .map(f => f.translation)
@@ -100,14 +100,21 @@ export const submitAnswer = asyncHandler(async (req: AuthRequest, res: Response)
 export const getAllFlashcards = asyncHandler(async (req: AuthRequest, res: Response): Promise<void> => {
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 20;
+  const language = req.query.language as string;
   const offset = (page - 1) * limit;
 
-  const flashcards = await DatabaseService.getAllFlashcards(limit, offset);
+  const flashcards = await DatabaseService.getAllFlashcards(limit, offset, language);
 
-  // Get total count
-  const { count, error } = await supabase
+  // Get total count with language filter
+  let countQuery = supabase
     .from('flashcards')
     .select('*', { count: 'exact', head: true });
+
+  if (language) {
+    countQuery = countQuery.eq('language', language);
+  }
+
+  const { count, error } = await countQuery;
 
   if (error) {
     res.status(500).json({
@@ -138,12 +145,12 @@ export const getAllFlashcards = asyncHandler(async (req: AuthRequest, res: Respo
 
 export const createFlashcard = asyncHandler(async (req: AuthRequest, res: Response): Promise<void> => {
   const user = req.user!;
-  const { object_name, translation, image_url } = req.body;
+  const { object_name, translation, image_url, language } = req.body;
 
-  if (!object_name || !translation || !image_url) {
+  if (!object_name || !translation || !image_url || !language) {
     res.status(400).json({
       success: false,
-      error: 'object_name, translation, and image_url are required'
+      error: 'object_name, translation, image_url, and language are required'
     });
     return;
   }
@@ -152,6 +159,7 @@ export const createFlashcard = asyncHandler(async (req: AuthRequest, res: Respon
     object_name,
     translation,
     image_url,
+    language,
     user.id
   );
 
@@ -175,6 +183,43 @@ export const getUserFlashcardHistory = asyncHandler(async (req: AuthRequest, res
     data: {
       history,
       total_seen: history.length
+    }
+  };
+
+  res.status(200).json(response);
+});
+
+export const getAvailableLanguages = asyncHandler(async (req: AuthRequest, res: Response): Promise<void> => {
+  const { data, error } = await supabase
+    .from('flashcards')
+    .select('language')
+    .order('language');
+
+  if (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get available languages'
+    });
+    return;
+  }
+
+  // Get unique languages and their counts
+  const languageCounts: { [key: string]: number } = {};
+  data.forEach(item => {
+    languageCounts[item.language] = (languageCounts[item.language] || 0) + 1;
+  });
+
+  const languages = Object.entries(languageCounts).map(([language, count]) => ({
+    language,
+    count,
+    available: count > 0
+  }));
+
+  const response: ApiResponse = {
+    success: true,
+    data: {
+      languages,
+      total_languages: languages.length
     }
   };
 

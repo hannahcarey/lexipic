@@ -1,4 +1,5 @@
 import requests
+import sys
 
 import torch
 from PIL import Image
@@ -64,10 +65,10 @@ def make_box(image,object):
     best_score=-1
     for box, score, labels in zip(result["boxes"], result["scores"], result["labels"]):
         box = [round(x, 2) for x in box.tolist()]
-        print(f"Detected {labels} with confidence {round(score.item(), 3)} at location {box}")
+        print(f"Detected {labels} with confidence {round(score.item(), 3)} at location {box}", file=sys.stderr)
         if score>best_score:
             best_box=box
-    print(f"best box is {best_box}")
+    print(f"best box is {best_box}", file=sys.stderr)
     return best_box
 
 def main():

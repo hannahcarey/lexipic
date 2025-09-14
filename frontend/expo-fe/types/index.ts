@@ -15,10 +15,58 @@ export interface User {
 export interface Question {
   id?: string;
   question: string;
-  correctAnswer: string;
-  options: string[];
+  correctAnswer?: string;
+  options?: string[];
   language?: string;
   imageUrl?: string;
+}
+
+// New types for the updated Q&A system
+export interface QuestionSet {
+  id: number;
+  question: string;
+  expected_answer: string;
+  question_type: 'comprehension' | 'vocabulary' | 'grammar' | 'cultural';
+  difficulty: number; // 1-5
+  points: number; // 0-100
+  feedback_template?: string;
+}
+
+export interface ImageAnalysisData {
+  description: string;
+  primary_object: string;
+  detected_objects: string[];
+  confidence: number;
+}
+
+export interface LearningContext {
+  language: string;
+  level: string;
+}
+
+export interface StudentEvaluation {
+  question_id: number;
+  question: string;
+  expected_answer: string;
+  student_answer: string;
+  points_earned: number;
+  max_points: number;
+  percentage: number;
+  feedback: string;
+  areas_for_improvement: string[];
+  strengths: string[];
+}
+
+export interface EvaluationSummary {
+  evaluations: StudentEvaluation[];
+  summary: {
+    total_points: number;
+    max_points: number;
+    percentage: number;
+    questions_answered: number;
+    level: string;
+    language: string;
+  };
 }
 
 export interface PracticeItem extends Question {
@@ -72,7 +120,14 @@ export interface AnalyzeImageRequest {
 }
 
 export interface AnalyzeImageResponse {
-  question: Question;
-  detectedObjects: string[];
-  confidence: number;
+  image_analysis: ImageAnalysisData;
+  learning_context: LearningContext;
+  questions: QuestionSet[];
+  total_questions: number;
+  instructions: string;
+  metadata?: {
+    processed_at: string;
+    user_id?: string;
+    request_type: string;
+  };
 }

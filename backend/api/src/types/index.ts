@@ -90,10 +90,62 @@ export interface ImageAnalysisRequest {
   userId?: string;
 }
 
+// Updated Image Analysis Response for complete Q&A system
 export interface ImageAnalysisResponse {
-  flashcard: IFlashcard;
-  detectedObjects: string[];
-  confidence: number;
+  image_analysis: {
+    description: string;
+    primary_object: string;
+    detected_objects: string[];
+    confidence: number;
+  };
+  learning_context: {
+    language: string;
+    level: string;
+  };
+  questions: QuestionSet[];
+  total_questions: number;
+  instructions: string;
+  metadata?: {
+    processed_at: string;
+    user_id?: string;
+    request_type: string;
+  };
+}
+
+// Q&A Types
+export interface QuestionSet {
+  id: number;
+  question: string;
+  expected_answer: string;
+  question_type: 'comprehension' | 'vocabulary' | 'grammar' | 'cultural';
+  difficulty: number; // 1-5
+  points: number; // 0-100
+  feedback_template?: string;
+}
+
+export interface StudentEvaluation {
+  question_id: number;
+  question: string;
+  expected_answer: string;
+  student_answer: string;
+  points_earned: number;
+  max_points: number;
+  percentage: number;
+  feedback: string;
+  areas_for_improvement: string[];
+  strengths: string[];
+}
+
+export interface EvaluationSummary {
+  evaluations: StudentEvaluation[];
+  summary: {
+    total_points: number;
+    max_points: number;
+    percentage: number;
+    questions_answered: number;
+    level: string;
+    language: string;
+  };
 }
 
 // Practice Types

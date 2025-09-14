@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer';
-import { analyzeImage, uploadImage, generateFlashcardFromImage } from '../controllers/imageController';
+import { analyzeImage, uploadImage, generateFlashcardFromImage, evaluateAnswers } from '../controllers/imageController';
 import { optionalAuth, validateImageUpload } from '../middleware';
 
 const router = Router();
@@ -22,9 +22,14 @@ const imageUpload = multer({
 });
 
 // @route   POST /api/image/analyze
-// @desc    Analyze image and return language learning flashcard
+// @desc    Analyze image from base64 JSON (for mobile app)
 // @access  Public (but better experience for authenticated users)
-router.post('/analyze', optionalAuth, imageUpload.single('image'), validateImageUpload, analyzeImage);
+router.post('/analyze', optionalAuth, analyzeImage);
+
+// @route   POST /api/image/analyze-upload  
+// @desc    Analyze uploaded image file (for web/multipart uploads)
+// @access  Public (but better experience for authenticated users)
+router.post('/analyze-upload', optionalAuth, imageUpload.single('image'), validateImageUpload, analyzeImage);
 
 // @route   POST /api/image/upload
 // @desc    Upload image and get URL
@@ -35,5 +40,10 @@ router.post('/upload', imageUpload.single('image'), validateImageUpload, uploadI
 // @desc    Generate flashcard from image URL (for AI-powered flashcard generation)
 // @access  Public
 router.post('/generate-flashcard', generateFlashcardFromImage);
+
+// @route   POST /api/image/evaluate
+// @desc    Evaluate student answers and provide detailed feedback
+// @access  Public (but better experience for authenticated users)
+router.post('/evaluate', optionalAuth, evaluateAnswers);
 
 export default router;

@@ -9,6 +9,10 @@ import {
   UserStats,
   AnalyzeImageRequest,
   AnalyzeImageResponse,
+  QuestionSet,
+  EvaluationSummary,
+  ImageAnalysisData,
+  LearningContext,
 } from '../types';
 
 class ApiService {
@@ -93,13 +97,47 @@ class ApiService {
   }
 
   // Image analysis endpoints
-  async analyzeImage(imageFormData: FormData): Promise<AnalyzeImageResponse> {
+  async analyzeImage(
+    base64Image: string, 
+    language: string = 'Spanish', 
+    level: string = 'A2'
+  ): Promise<AnalyzeImageResponse> {
     const response: AxiosResponse<ApiResponse<AnalyzeImageResponse>> = await this.api.post(
       '/image/analyze',
-      imageFormData,
+      { 
+        base64Image,
+        language,
+        level
+      },
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data.data;
+  }
+
+  // Answer evaluation endpoint
+  async evaluateAnswers(
+    imageDescription: string,
+    questions: QuestionSet[],
+    studentAnswers: string[],
+    language: string,
+    level: string
+  ): Promise<EvaluationSummary> {
+    const response: AxiosResponse<ApiResponse<EvaluationSummary>> = await this.api.post(
+      '/image/evaluate',
+      {
+        imageDescription,
+        questions,
+        studentAnswers,
+        language,
+        level
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
         },
       }
     );

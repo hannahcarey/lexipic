@@ -1,0 +1,31 @@
+# Image Processing Dependencies for pic_process module
+# Install with: pip install -r requirements.txt
+
+# AI/ML APIs
+anthropic>=0.34.0
+
+# Image Processing
+Pillow>=10.0.0
+numpy>=1.24.0
+
+# PyTorch and Transformers for Object Detection
+torch>=2.0.0
+transformers>=4.30.0
+
+# HTTP and Networking
+httpx>=0.24.0
+requests>=2.31.0
+
+# Visualization (for bounding boxes)
+matplotlib>=3.7.0
+
+# Optional but useful for development
+IPython>=8.0.0
+
+# Additional dependencies that might be needed
+# for transformers object detection models
+accelerate>=0.20.0
+sentencepiece>=0.1.99
+
+# Environment variable management
+python-dotenv>=1.0.0

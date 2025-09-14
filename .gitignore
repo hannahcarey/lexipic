@@ -1,3 +1,33 @@
 # ignore my api script
-
 upload_key.py
+
+# Environment variables (contain secrets)
+.env
+**/.env
+*.env
+
+# Node modules
+node_modules/
+**/node_modules/
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+
+# Build directories
+dist/
+build/
+.next/
+.expo/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

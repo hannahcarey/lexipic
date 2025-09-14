@@ -1,4 +1,4 @@
-from generate_bounding_box import make_box
+from generate_bounding_box import bounding_box
 from generate_summary import get_image_summary
 from generate_word_list import get_image_words
 
@@ -13,12 +13,13 @@ import numpy as np
 
 class pic_process():
     image_index=0
+    bounding_box_maker=bounding_box()
     def image_to_json(self,image):
         #image preprocessing
         object_list=get_image_words(image)
         random_object = random.choice(object_list)
         summary=get_image_summary(image)
-        box=make_box(self.base64_to_PIL(image),random_object)
+        box=self.bounding_box_maker.make_box(self.base64_to_PIL(image),random_object)
         self.image_index=self.image_index+1
 
         response = {
@@ -61,7 +62,15 @@ class pic_process():
 
 def main():
     a = pic_process()
+    print("starting first test")
     a.test()
+    print("starting second test")
+    a.test()
+    print("third")
+    a.test()
+    print("forth")
+    a.test()
+    print('done')
 
 if __name__ == "__main__":
     main()
